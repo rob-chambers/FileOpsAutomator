@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace FileOpsAutomator.Host
 {
-    static class Program
+    internal static class Program
     {
         /// <summary>
         /// The main entry point for the application.
@@ -14,9 +14,8 @@ namespace FileOpsAutomator.Host
         static void Main()
         {            
             // Use the assembly GUID as the name of the mutex which we use to detect if an application instance is already running
-            var createdNew = false;
             var mutexName = Assembly.GetExecutingAssembly().GetType().GUID.ToString();
-            using (var mutex = new Mutex(false, mutexName, out createdNew))
+            using (var mutex = new Mutex(false, mutexName, out var createdNew))
             {
                 if (!createdNew)
                 {
@@ -31,9 +30,9 @@ namespace FileOpsAutomator.Host
                     var context = new STAApplicationContext();
                     Application.Run(context);
                 }
-                catch (Exception exc)
+                catch (Exception ex)
                 {
-                    MessageBox.Show(exc.Message, "Error");
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

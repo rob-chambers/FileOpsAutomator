@@ -2,7 +2,7 @@
 
 namespace FileOpsAutomator.Host
 {
-    public class STAApplicationContext : ApplicationContext
+    internal sealed class STAApplicationContext : ApplicationContext
     {
         private ViewManager _viewManager;
         private IFileWatcher _fileWatcher;

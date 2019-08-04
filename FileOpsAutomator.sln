@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.29123.89
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileOpsAutomator.Host", "FileOpsAutomator.Host\FileOpsAutomator.Host.csproj", "{8C3C71DD-E5DC-425F-9B97-B55EBB280CB5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileOpsAutomator.Tests", "FileOpsAutomator.Tests\FileOpsAutomator.Tests.csproj", "{3A2F7CF1-B928-4CE6-B0CD-D7A80DBF5C0E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileOpsAutomator.UI", "FileOpsAutomator.UI\FileOpsAutomator.UI.csproj", "{CACDE357-12F7-444A-BC86-1D33E90C1305}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{8C3C71DD-E5DC-425F-9B97-B55EBB280CB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C3C71DD-E5DC-425F-9B97-B55EBB280CB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C3C71DD-E5DC-425F-9B97-B55EBB280CB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A2F7CF1-B928-4CE6-B0CD-D7A80DBF5C0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A2F7CF1-B928-4CE6-B0CD-D7A80DBF5C0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A2F7CF1-B928-4CE6-B0CD-D7A80DBF5C0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A2F7CF1-B928-4CE6-B0CD-D7A80DBF5C0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CACDE357-12F7-444A-BC86-1D33E90C1305}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CACDE357-12F7-444A-BC86-1D33E90C1305}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CACDE357-12F7-444A-BC86-1D33E90C1305}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CACDE357-12F7-444A-BC86-1D33E90C1305}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

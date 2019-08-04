@@ -1,20 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 using System.Reflection;
 using System.Windows.Media;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Media.Imaging;
 
 namespace FileOpsAutomator.Host
 {
-    public class ViewManager
+    internal sealed class ViewManager
     {
-        // This allows code to be run on a GUI thread
-        private System.Windows.Window _hiddenWindow;
+        private const int BalloonTimeoutInMilliseconds = 3000;
 
+        // This allows code to be run on a GUI thread
+        private Window _hiddenWindow;
         private IContainer _components;
+
         // The Windows system tray class
         private NotifyIcon _notifyIcon;
         private IFileWatcher _fileWatcher;
@@ -24,14 +26,14 @@ namespace FileOpsAutomator.Host
         //private WpfFormLibrary.View.StatusView _statusView;
         //private WpfFormLibrary.ViewModel.StatusViewModel _statusViewModel;
 
-        private ToolStripMenuItem _startDeviceMenuItem;
-        private ToolStripMenuItem _stopDeviceMenuItem;
+        private ToolStripMenuItem _startWatcherMenuItem;
+        private ToolStripMenuItem _rulesMenuItem;
+        private ToolStripMenuItem _optionsMenuItem;
+        private ToolStripMenuItem _stopWatcherMenuItem;
         private ToolStripMenuItem _exitMenuItem;
 
         public ViewManager(IFileWatcher fileWatcher)
         {
-            System.Diagnostics.Debug.Assert(fileWatcher != null);
-
             _fileWatcher = fileWatcher;
 
             _components = new Container();
@@ -57,17 +59,18 @@ namespace FileOpsAutomator.Host
             _hiddenWindow.Hide();
         }
 
-        ImageSource AppIcon
+        private ImageSource AppIcon
         {
             get
             {
                 var icon = (_fileWatcher.Status == FileWatcherStatus.Running) 
                     ? Properties.Resources.ReadyIcon 
                     : Properties.Resources.NotReadyIcon;
-                return System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(
+
+                return Imaging.CreateBitmapSourceFromHIcon(
                     icon.Handle,
-                    System.Windows.Int32Rect.Empty,
-                    System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
+                    Int32Rect.Empty,
+                    BitmapSizeOptions.FromEmptyOptions());
             }
         }
 
@@ -89,11 +92,6 @@ namespace FileOpsAutomator.Host
 
             switch (_fileWatcher.Status)
             {
-                //case FileWatcherStatus.Initialised:
-                //    _notifyIcon.Text = _fileWatcher.DeviceName + ": Ready";
-                //    _notifyIcon.Icon = Properties.Resources.NotReadyIcon;
-                //    DisplayStatusMessage("Idle");
-                //    break;
                 case FileWatcherStatus.Running:
                     _notifyIcon.Text = "Running";
                     _notifyIcon.Icon = Properties.Resources.ReadyIcon;
@@ -106,35 +104,11 @@ namespace FileOpsAutomator.Host
                     DisplayStatusMessage("Stopped");
                     break;
 
-                //case DeviceStatus.Starting:
-                //    _notifyIcon.Text = _fileWatcher.DeviceName + ": Starting";
-                //    _notifyIcon.Icon = Properties.Resources.NotReadyIcon;
-                //    DisplayStatusMessage("Starting");
-                //    break;
-                //case DeviceStatus.Uninitialised:
-                //    _notifyIcon.Text = _fileWatcher.DeviceName + ": Not Ready";
-                //    _notifyIcon.Icon = Properties.Resources.NotReadyIcon;
-                //    break;
-                //case DeviceStatus.Error:
-                //    _notifyIcon.Text = _fileWatcher.DeviceName + ": Error Detected";
-                //    _notifyIcon.Icon = Properties.Resources.NotReadyIcon;
-                //    break;
-
                 default:
                     _notifyIcon.Text = "Stopped"; //_fileWatcher.DeviceName + ": -";
                     _notifyIcon.Icon = Properties.Resources.NotReadyIcon;
                     break;
             }
-
-            //var icon = AppIcon;
-            //if (_aboutView != null)
-            //{
-            //    _aboutView.Icon = AppIcon;
-            //}
-            //if (_statusView != null)
-            //{
-            //    _statusView.Icon = AppIcon;
-            //}
         }
 
         private void DisplayStatusMessage(string text)
@@ -144,7 +118,7 @@ namespace FileOpsAutomator.Host
                 _notifyIcon.BalloonTipText = text;
                 
                 // The timeout is ignored on recent Windows
-                _notifyIcon.ShowBalloonTip(3000);
+                _notifyIcon.ShowBalloonTip(BalloonTimeoutInMilliseconds);
             });
         }
 
@@ -160,6 +134,16 @@ namespace FileOpsAutomator.Host
             }
         }
 
+        private void OnOptionsClick(object sender, EventArgs e)
+        {
+
+        }
+
+        private void OnRulesClick(object sender, EventArgs e)
+        {
+
+        }
+
         private ToolStripMenuItem ToolStripMenuItemWithHandler(string displayText, string tooltipText, EventHandler eventHandler)
         {
             var item = new ToolStripMenuItem(displayText);
@@ -170,25 +154,6 @@ namespace FileOpsAutomator.Host
 
             item.ToolTipText = tooltipText;
             return item;
-        }
-
-        private void ShowStatusView()
-        {
-            //if (_statusView == null)
-            //{
-            //    _statusView = new WpfFormLibrary.View.StatusView();
-            //    _statusView.DataContext = _statusViewModel;
-
-            //    _statusView.Closing += ((arg_1, arg_2) => _statusView = null);
-            //    _statusView.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
-            //    _statusView.Show();
-            //    UpdateStatusView();
-            //}
-            //else
-            //{
-            //    _statusView.Activate();
-            //}
-            //_statusView.Icon = AppIcon;
         }
 
         private void OnShowStatusItemClick(object sender, EventArgs e)
@@ -220,14 +185,9 @@ namespace FileOpsAutomator.Host
             //_aboutViewModel.AddVersionInfo("Serial Number", "142573462354");
         }
 
-        private void showHelpItem_Click(object sender, EventArgs e)
+        private void OnShowAboutDialogClick(object sender, EventArgs e)
         {
             ShowAboutView();
-        }
-
-        private void showWebSite_Click(object sender, EventArgs e)
-        {
-            System.Diagnostics.Process.Start("http://www.CodeProject.com/");
         }
 
         private void OnExit(object sender, EventArgs e)
@@ -250,65 +210,55 @@ namespace FileOpsAutomator.Host
             var methodInfo = typeof(NotifyIcon).GetMethod("ShowContextMenu", BindingFlags.Instance | BindingFlags.NonPublic);
             methodInfo.Invoke(_notifyIcon, null);
         }
-
         
-
         private void OnContextMenuStripOpening(object sender, CancelEventArgs e)
         {
             e.Cancel = false;
 
-            if (_notifyIcon.ContextMenuStrip.Items.Count == 0)
+            var contextMenuStrip = _notifyIcon.ContextMenuStrip;
+            if (contextMenuStrip.Items.Count == 0)
             {
-                _startDeviceMenuItem = ToolStripMenuItemWithHandler("Start Device", "Starts the device", OnStartStopClick);
-                _notifyIcon.ContextMenuStrip.Items.Add(_startDeviceMenuItem);
-                _stopDeviceMenuItem = ToolStripMenuItemWithHandler("Stop Device", "Stops the device", OnStartStopClick);
-                _notifyIcon.ContextMenuStrip.Items.Add(_stopDeviceMenuItem);
-                _notifyIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
-                _notifyIcon.ContextMenuStrip.Items.Add(ToolStripMenuItemWithHandler("Device S&tatus", "Shows the device status dialog", OnShowStatusItemClick));
-                _notifyIcon.ContextMenuStrip.Items.Add(ToolStripMenuItemWithHandler("&About", "Shows the About dialog", showHelpItem_Click));
-                _notifyIcon.ContextMenuStrip.Items.Add(ToolStripMenuItemWithHandler("Code Project &Web Site", "Navigates to the Code Project Web Site", showWebSite_Click));
-                _notifyIcon.ContextMenuStrip.Items.Add(new ToolStripSeparator());
+                _startWatcherMenuItem = ToolStripMenuItemWithHandler("Start", "Start all automation rules", OnStartStopClick);
+                contextMenuStrip.Items.Add(_startWatcherMenuItem);
+
+                _stopWatcherMenuItem = ToolStripMenuItemWithHandler("Stop", "Stop all automation rules from running", OnStartStopClick);
+                contextMenuStrip.Items.Add(_stopWatcherMenuItem);
+
+                contextMenuStrip.Items.Add(new ToolStripSeparator());
+
+                _rulesMenuItem = ToolStripMenuItemWithHandler("Rules", "Specify automation rules", OnRulesClick);
+                contextMenuStrip.Items.Add(_rulesMenuItem);
+
+                _optionsMenuItem = ToolStripMenuItemWithHandler("Options", "Edit options", OnOptionsClick);                
+                contextMenuStrip.Items.Add(_optionsMenuItem);
+
+                contextMenuStrip.Items.Add(ToolStripMenuItemWithHandler("&About", "Shows the About dialog", OnShowAboutDialogClick));
+                contextMenuStrip.Items.Add(new ToolStripSeparator());
                 _exitMenuItem = ToolStripMenuItemWithHandler("&Exit", "Exits System Tray App", OnExit);
-                _notifyIcon.ContextMenuStrip.Items.Add(_exitMenuItem);
+                contextMenuStrip.Items.Add(_exitMenuItem);
             }
 
-            SetMenuItems();
+            SetMenuItemsEnabledStatus();
         }
 
-        private void SetMenuItems()
+        private void SetMenuItemsEnabledStatus()
         {
             switch (_fileWatcher.Status)
             {
-                //case DeviceStatus.Initialised:
-                //    _startDeviceMenuItem.Enabled = true;
-                //    _stopDeviceMenuItem.Enabled = false;
-                //    _exitMenuItem.Enabled = true;
-                //    break;
-                //case DeviceStatus.Starting:
-                //    _startDeviceMenuItem.Enabled = false;
-                //    _stopDeviceMenuItem.Enabled = false;
-                //    _exitMenuItem.Enabled = false;
-                //    break;
                 case FileWatcherStatus.Running:
-                    _startDeviceMenuItem.Enabled = false;
-                    _stopDeviceMenuItem.Enabled = true;
+                    _startWatcherMenuItem.Enabled = false;
+                    _stopWatcherMenuItem.Enabled = true;
                     _exitMenuItem.Enabled = true;
                     break;
 
-                //case DeviceStatus.Uninitialised:
-                //    _startDeviceMenuItem.Enabled = false;
-                //    _stopDeviceMenuItem.Enabled = false;
-                //    _exitMenuItem.Enabled = true;
-                //    break;
-                //case DeviceStatus.Error:
-                //    _startDeviceMenuItem.Enabled = false;
-                //    _stopDeviceMenuItem.Enabled = false;
-                //    _exitMenuItem.Enabled = true;
-                //    break;
+                case FileWatcherStatus.Stopped:
+                    _startWatcherMenuItem.Enabled = true;
+                    _stopWatcherMenuItem.Enabled = false;
+                    _exitMenuItem.Enabled = true;
+                    break;
 
                 default:
-                    System.Diagnostics.Debug.Assert(false, "SetButtonStatus() => Unknown state");
-                    break;
+                    throw new Exception($"Unexpected status: {_fileWatcher.Status}");
             }
         }
     }
