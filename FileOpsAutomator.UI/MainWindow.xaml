@@ -14,7 +14,7 @@
     </Window.DataContext>
     <Grid>
         <Controls:MetroAnimatedSingleRowTabControl>
-            <Controls:MetroTabItem Header="Rules" DataContext="{Binding RulesViewModel}" >
+            <Controls:MetroTabItem Header="Rules" >
                 <views:RulesView />
             </Controls:MetroTabItem>
 

@@ -4,9 +4,42 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:FileOpsAutomator.UI.Views"
+             xmlns:vms="clr-namespace:FileOpsAutomator.UI.ViewModels"
              mc:Ignorable="d" 
-             d:DesignHeight="250" d:DesignWidth="300">
+             d:DesignHeight="200" d:DesignWidth="500">
+    <!--<UserControl.DataContext>
+        <vms:RulesViewModel />
+    </UserControl.DataContext>-->
     <Grid>
-        <TextBlock Text="Rules" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        
+        <DataGrid ItemsSource="{Binding Rules}">
+            <DataGridCheckBoxColumn ElementStyle="{DynamicResource MetroDataGridCheckBox}"
+                                        Header="IsSelected"
+                                        Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=IsSelected, Mode=OneWay}"
+                                        />
+            <DataGridTextColumn Header="Source Folder" Binding="{Binding SourceFolder}" />
+            <DataGridTextColumn Header="Filter" Binding="{Binding Filter}" />
+            <DataGridTemplateColumn Header="Edit">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <Button Content="Edit" />
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+            
+            <!--<DataGridTextColumn Header="Destination Folder" Binding="{Binding DestinationFolder}" />-->
+        </DataGrid>
+
+        <Button Grid.Row="1" MaxWidth="70" Content="Add" Margin="10" >
+            
+        </Button>
+
+        <Popup IsOpen="False">
+            <TextBlock Text="You have no rules set up.  Click here to add one." />
+        </Popup>
     </Grid>
 </UserControl>

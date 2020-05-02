@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileOpsAutomator.Tests", "F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileOpsAutomator.UI", "FileOpsAutomator.UI\FileOpsAutomator.UI.csproj", "{CACDE357-12F7-444A-BC86-1D33E90C1305}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileOpsAutomator.Core", "FileOpsAutomator.Core\FileOpsAutomator.Core.csproj", "{EC973A10-FFB3-4C26-9966-85054F98AEBB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{CACDE357-12F7-444A-BC86-1D33E90C1305}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CACDE357-12F7-444A-BC86-1D33E90C1305}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CACDE357-12F7-444A-BC86-1D33E90C1305}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC973A10-FFB3-4C26-9966-85054F98AEBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC973A10-FFB3-4C26-9966-85054F98AEBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC973A10-FFB3-4C26-9966-85054F98AEBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC973A10-FFB3-4C26-9966-85054F98AEBB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -56,7 +56,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="RulesViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +64,16 @@
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FileOpsAutomator.Core\FileOpsAutomator.Core.csproj">
+      <Project>{EC973A10-FFB3-4C26-9966-85054F98AEBB}</Project>
+      <Name>FileOpsAutomator.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FileOpsAutomator.UI\FileOpsAutomator.UI.csproj">
+      <Project>{CACDE357-12F7-444A-BC86-1D33E90C1305}</Project>
+      <Name>FileOpsAutomator.UI</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -1,12 +1,14 @@
-﻿namespace FileOpsAutomator.UI.ViewModels
+﻿using FileOpsAutomator.Core;
+
+namespace FileOpsAutomator.UI.ViewModels
 {
     public class RulesViewModel : ViewModelBase
     {
         public RulesViewModel()
         {
-            Name = "Rules";
+            
         }
 
-        public string Name { get; set; }
+        public RulesCollection Rules { get; set; } = new RulesCollection();
     }
 }

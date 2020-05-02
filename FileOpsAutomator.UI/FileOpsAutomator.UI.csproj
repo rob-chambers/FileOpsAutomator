@@ -67,6 +67,7 @@
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\OptionsViewModel.cs" />
+    <Compile Include="ViewModels\RulesCollection.cs" />
     <Compile Include="ViewModels\RulesViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\AboutView.xaml.cs">
@@ -130,6 +131,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\FileOpsAutomator.Core\FileOpsAutomator.Core.csproj">
+      <Project>{EC973A10-FFB3-4C26-9966-85054F98AEBB}</Project>
+      <Name>FileOpsAutomator.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
