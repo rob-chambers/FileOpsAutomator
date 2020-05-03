@@ -6,12 +6,15 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
+using FileOpsAutomator.Core;
 
 namespace FileOpsAutomator.Host
 {
-    internal sealed class ViewManager
+    internal sealed class ViewManager : IViewManager
     {
         private const int BalloonTimeoutInMilliseconds = 3000;
+
+        private readonly IFileWatcher _fileWatcher;
 
         // This allows code to be run on a GUI thread
         private Window _hiddenWindow;
@@ -19,13 +22,7 @@ namespace FileOpsAutomator.Host
 
         // The Windows system tray class
         private NotifyIcon _notifyIcon;
-        private IFileWatcher _fileWatcher;
-
-        //private WpfFormLibrary.View.AboutView _aboutView;
-        //private WpfFormLibrary.ViewModel.AboutViewModel _aboutViewModel;
-        //private WpfFormLibrary.View.StatusView _statusView;
-        //private WpfFormLibrary.ViewModel.StatusViewModel _statusViewModel;
-
+        
         private ToolStripMenuItem _startWatcherMenuItem;
         private ToolStripMenuItem _rulesMenuItem;
         private ToolStripMenuItem _optionsMenuItem;
@@ -35,7 +32,10 @@ namespace FileOpsAutomator.Host
         public ViewManager(IFileWatcher fileWatcher)
         {
             _fileWatcher = fileWatcher;
+        }
 
+        public void Initialize()
+        {
             _components = new Container();
             _notifyIcon = new NotifyIcon(_components)
             {
@@ -49,14 +49,10 @@ namespace FileOpsAutomator.Host
             _notifyIcon.DoubleClick += OnNotifyIconDoubleClick;
             _notifyIcon.MouseUp += OnNotifyIconMouseUp;
 
-            //_aboutViewModel = new WpfFormLibrary.ViewModel.AboutViewModel();
-            //_statusViewModel = new WpfFormLibrary.ViewModel.StatusViewModel();
-
-            //_statusViewModel.Icon = AppIcon;
-            //_aboutViewModel.Icon = _statusViewModel.Icon;
-
             _hiddenWindow = new Window();
             _hiddenWindow.Hide();
+
+            Start();
         }
 
         private ImageSource AppIcon
@@ -74,22 +70,8 @@ namespace FileOpsAutomator.Host
             }
         }
 
-        private void UpdateStatusView()
+        private void OnStatusChanged(object sender, EventArgs args)
         {
-            //if ((_statusViewModel != null) && (_fileWatcher != null))
-            //{
-            //    List<KeyValuePair<string, bool>> flags = _fileWatcher.StatusFlags;
-            //    var statusItems = flags.Select(n => new KeyValuePair<string, string>(n.Key, n.Value.ToString())).ToList();
-            //    statusItems.Insert(0, new KeyValuePair<string, string>("Device", _fileWatcher.DeviceName));
-            //    statusItems.Insert(1, new KeyValuePair<string, string>("Status", _fileWatcher.Status.ToString()));
-            //    _statusViewModel.SetStatusFlags(statusItems);
-            //}
-        }
-
-        public void OnStatusChange(object sender, EventArgs args)
-        {
-            UpdateStatusView();
-
             switch (_fileWatcher.Status)
             {
                 case FileWatcherStatus.Running:
@@ -126,12 +108,24 @@ namespace FileOpsAutomator.Host
         {
             if (_fileWatcher.Status == FileWatcherStatus.Running)
             {
-                _fileWatcher.Stop();
+                Stop();                
             }
             else
             {
-                _fileWatcher.Start();
+                Start();
             }
+        }
+
+        private void Start()
+        {
+            _fileWatcher.Start();
+            OnStatusChanged(this, EventArgs.Empty);
+        }
+
+        private void Stop()
+        {
+            _fileWatcher.Stop();
+            OnStatusChanged(this, EventArgs.Empty);
         }
 
         private void OnOptionsClick(object sender, EventArgs e)
@@ -164,25 +158,7 @@ namespace FileOpsAutomator.Host
 
         private void ShowAboutView()
         {
-            System.Windows.MessageBox.Show("About view");
-            //if (_aboutView == null)
-            //{
-            //    _aboutView = new WpfFormLibrary.View.AboutView();
-            //    _aboutView.DataContext = _aboutViewModel;
-            //    _aboutView.Closing += ((arg_1, arg_2) => _aboutView = null);
-            //    _aboutView.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
-
-            //    _aboutView.Show();
-            //}
-            //else
-            //{
-            //    _aboutView.Activate();
-            //}
-            //_aboutView.Icon = AppIcon;
-
-            //_aboutViewModel.AddVersionInfo("Hardware", _fileWatcher.DeviceName);
-            //_aboutViewModel.AddVersionInfo("Version", Assembly.GetExecutingAssembly().GetName().Version.ToString());
-            //_aboutViewModel.AddVersionInfo("Serial Number", "142573462354");
+            System.Windows.Forms.MessageBox.Show("About view");
         }
 
         private void OnShowAboutDialogClick(object sender, EventArgs e)

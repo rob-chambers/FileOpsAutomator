@@ -1,4 +1,4 @@
-﻿namespace FileOpsAutomator.Core
+﻿namespace FileOpsAutomator.Core.Rules
 {
     public abstract class Rule
     {
@@ -7,10 +7,5 @@
         public Operation Operation { get; set; }
 
         public Filter Filter { get; set; }
-    }
-
-    public class MoveRule : Rule
-    {
-        public string DestinationFolder { get; set; }
     }
 }

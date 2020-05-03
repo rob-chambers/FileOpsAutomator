@@ -1,4 +1,4 @@
-﻿using FileOpsAutomator.Core;
+﻿using FileOpsAutomator.Core.Rules;
 using System.Collections.ObjectModel;
 
 namespace FileOpsAutomator.UI.ViewModels

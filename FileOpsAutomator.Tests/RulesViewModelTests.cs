@@ -1,4 +1,5 @@
 ﻿using FileOpsAutomator.Core;
+using FileOpsAutomator.Core.Rules;
 using FileOpsAutomator.UI.ViewModels;
 using Xunit;
 

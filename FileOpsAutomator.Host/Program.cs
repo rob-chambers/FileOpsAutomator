@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using System.Threading;
 using System.Reflection;
+using Ninject;
 
 namespace FileOpsAutomator.Host
 {
@@ -27,7 +28,8 @@ namespace FileOpsAutomator.Host
                 Application.SetCompatibleTextRenderingDefault(false);
                 try
                 {
-                    var context = new STAApplicationContext();
+                    var kernel = new KernelConfiguration(new MainModule()).BuildReadonlyKernel();
+                    var context = kernel.Get<STAApplicationContext>();
                     Application.Run(context);
                 }
                 catch (Exception ex)

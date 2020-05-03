@@ -1,37 +1,27 @@
-﻿using System.Windows.Forms;
+﻿using FileOpsAutomator.Core;
+using System.Windows.Forms;
 
 namespace FileOpsAutomator.Host
 {
     internal sealed class STAApplicationContext : ApplicationContext
     {
-        private ViewManager _viewManager;
-        private IFileWatcher _fileWatcher;
+        private readonly IViewManager _viewManager;
+        private readonly IFileWatcher _fileWatcher;
 
-        public STAApplicationContext()
+        public STAApplicationContext(IViewManager viewManager, IFileWatcher fileWatcher)
         {
-            _fileWatcher = new FileWatcher();
-            _viewManager = new ViewManager(_fileWatcher);
-
-            _fileWatcher.StatusChanged += _viewManager.OnStatusChange;
-
-            _fileWatcher.Start();
+            _viewManager = viewManager;
+            _viewManager.Initialize();
+            _fileWatcher = fileWatcher;
         }
 
         // Called from the Dispose method of the base class
         protected override void Dispose(bool disposing)
         {
-            if ((_fileWatcher != null) && (_viewManager != null))
-            {
-                _fileWatcher.StatusChanged -= _viewManager.OnStatusChange;
-            }
-
             if (_fileWatcher != null)
             {
                 _fileWatcher.Terminate();
             }
-
-            _fileWatcher = null;
-            _viewManager = null;
         }
     }
 }
