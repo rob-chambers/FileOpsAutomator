@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ninject, Version=4.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.4.0.0-beta-0134\lib\net45\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,16 +44,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CoreModule.cs" />
+    <Compile Include="FileManager.cs" />
     <Compile Include="FileWatcher.cs" />
+    <Compile Include="FileWatcherEventArgs.cs" />
     <Compile Include="FileWatcherStatus.cs" />
-    <Compile Include="Filter.cs" />
+    <Compile Include="Filters\EndsWithFilter.cs" />
+    <Compile Include="Filters\ExactMatchFilter.cs" />
+    <Compile Include="Filters\Filter.cs" />
+    <Compile Include="Filters\StartsWithFilter.cs" />
+    <Compile Include="IFileManager.cs" />
     <Compile Include="IFileWatcher.cs" />
-    <Compile Include="KnownOperations.cs" />
+    <Compile Include="IRuleRepository.cs" />
     <Compile Include="Rules\MoveRule.cs" />
-    <Compile Include="Operation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rules\Rule.cs" />
+    <Compile Include="Rules\RuleProcessedEventArgs.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

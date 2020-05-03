@@ -1,9 +1,8 @@
-﻿using System;
-
-namespace FileOpsAutomator.Host
+﻿namespace FileOpsAutomator.Host
 {
     internal interface IViewManager
     {
         void Initialize();
+        void Terminate();
     }
 }

@@ -58,6 +58,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="InMemoryRuleRepository.cs" />
     <Compile Include="IViewManager.cs" />
     <Compile Include="MainModule.cs" />
     <Compile Include="Program.cs" />

@@ -8,8 +8,8 @@ namespace FileOpsAutomator.Host
         public override void Load()
         {
             Bind<STAApplicationContext>().To<STAApplicationContext>().InThreadScope();
-            Bind<IFileWatcher>().To<FileWatcher>().InThreadScope();
             Bind<IViewManager>().To<ViewManager>().InThreadScope();
+            Bind<IRuleRepository>().To<InMemoryRuleRepository>().InThreadScope();
         }
     }
 }

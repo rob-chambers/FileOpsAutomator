@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System.Threading;
 using System.Reflection;
 using Ninject;
+using FileOpsAutomator.Core;
 
 namespace FileOpsAutomator.Host
 {
@@ -28,7 +29,7 @@ namespace FileOpsAutomator.Host
                 Application.SetCompatibleTextRenderingDefault(false);
                 try
                 {
-                    var kernel = new KernelConfiguration(new MainModule()).BuildReadonlyKernel();
+                    var kernel = new KernelConfiguration(new MainModule(), new CoreModule()).BuildReadonlyKernel();
                     var context = kernel.Get<STAApplicationContext>();
                     Application.Run(context);
                 }

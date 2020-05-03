@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using FileOpsAutomator.Core;
+using FileOpsAutomator.Core.Rules;
 
 namespace FileOpsAutomator.Host
 {
@@ -14,7 +15,7 @@ namespace FileOpsAutomator.Host
     {
         private const int BalloonTimeoutInMilliseconds = 3000;
 
-        private readonly IFileWatcher _fileWatcher;
+        private readonly IFileManager _fileManager;
 
         // This allows code to be run on a GUI thread
         private Window _hiddenWindow;
@@ -25,13 +26,19 @@ namespace FileOpsAutomator.Host
         
         private ToolStripMenuItem _startWatcherMenuItem;
         private ToolStripMenuItem _rulesMenuItem;
-        private ToolStripMenuItem _optionsMenuItem;
         private ToolStripMenuItem _stopWatcherMenuItem;
         private ToolStripMenuItem _exitMenuItem;
 
-        public ViewManager(IFileWatcher fileWatcher)
+        public ViewManager(IFileManager fileManager)
         {
-            _fileWatcher = fileWatcher;
+            _fileManager = fileManager;
+            _fileManager.StatusChanged += OnStatusChanged;
+            _fileManager.RuleProcessed += OnRuleProcessed;
+        }
+
+        private void OnRuleProcessed(object sender, RuleProcessedEventArgs e)
+        {
+            DisplayStatusMessage(e.Message);
         }
 
         public void Initialize()
@@ -52,6 +59,8 @@ namespace FileOpsAutomator.Host
             _hiddenWindow = new Window();
             _hiddenWindow.Hide();
 
+            _fileManager.ReadRulesAsync().Wait();
+
             Start();
         }
 
@@ -59,7 +68,7 @@ namespace FileOpsAutomator.Host
         {
             get
             {
-                var icon = (_fileWatcher.Status == FileWatcherStatus.Running) 
+                var icon = (_fileManager.Status == FileWatcherStatus.Running) 
                     ? Properties.Resources.ReadyIcon 
                     : Properties.Resources.NotReadyIcon;
 
@@ -72,7 +81,7 @@ namespace FileOpsAutomator.Host
 
         private void OnStatusChanged(object sender, EventArgs args)
         {
-            switch (_fileWatcher.Status)
+            switch (_fileManager.Status)
             {
                 case FileWatcherStatus.Running:
                     _notifyIcon.Text = "Running";
@@ -106,7 +115,7 @@ namespace FileOpsAutomator.Host
 
         private void OnStartStopClick(object sender, EventArgs e)
         {
-            if (_fileWatcher.Status == FileWatcherStatus.Running)
+            if (_fileManager.Status == FileWatcherStatus.Running)
             {
                 Stop();                
             }
@@ -118,19 +127,12 @@ namespace FileOpsAutomator.Host
 
         private void Start()
         {
-            _fileWatcher.Start();
-            OnStatusChanged(this, EventArgs.Empty);
+            _fileManager.Start();            
         }
 
         private void Stop()
         {
-            _fileWatcher.Stop();
-            OnStatusChanged(this, EventArgs.Empty);
-        }
-
-        private void OnOptionsClick(object sender, EventArgs e)
-        {
-
+            _fileManager.Stop();
         }
 
         private void OnRulesClick(object sender, EventArgs e)
@@ -148,12 +150,6 @@ namespace FileOpsAutomator.Host
 
             item.ToolTipText = tooltipText;
             return item;
-        }
-
-        private void OnShowStatusItemClick(object sender, EventArgs e)
-        {
-            //ShowStatusView();
-            System.Windows.MessageBox.Show("Status view");
         }
 
         private void ShowAboutView()
@@ -205,9 +201,6 @@ namespace FileOpsAutomator.Host
                 _rulesMenuItem = ToolStripMenuItemWithHandler("Rules", "Specify automation rules", OnRulesClick);
                 contextMenuStrip.Items.Add(_rulesMenuItem);
 
-                _optionsMenuItem = ToolStripMenuItemWithHandler("Options", "Edit options", OnOptionsClick);                
-                contextMenuStrip.Items.Add(_optionsMenuItem);
-
                 contextMenuStrip.Items.Add(ToolStripMenuItemWithHandler("&About", "Shows the About dialog", OnShowAboutDialogClick));
                 contextMenuStrip.Items.Add(new ToolStripSeparator());
                 _exitMenuItem = ToolStripMenuItemWithHandler("&Exit", "Exits System Tray App", OnExit);
@@ -219,7 +212,7 @@ namespace FileOpsAutomator.Host
 
         private void SetMenuItemsEnabledStatus()
         {
-            switch (_fileWatcher.Status)
+            switch (_fileManager.Status)
             {
                 case FileWatcherStatus.Running:
                     _startWatcherMenuItem.Enabled = false;
@@ -234,8 +227,13 @@ namespace FileOpsAutomator.Host
                     break;
 
                 default:
-                    throw new Exception($"Unexpected status: {_fileWatcher.Status}");
+                    throw new Exception($"Unexpected status: {_fileManager.Status}");
             }
+        }
+
+        public void Terminate()
+        {
+            Stop();
         }
     }
 }
