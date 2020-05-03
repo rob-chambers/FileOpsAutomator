@@ -1,15 +1,15 @@
 ﻿using System;
-using System.ComponentModel;
 
 namespace FileOpsAutomator.Core.Filters
 {
-    [Description("exact match")]
     public class ExactMatchFilter : Filter
     {
         public ExactMatchFilter(string name, string extension)
             : base(name, extension)
         {
         }
+
+        public override string Description => "exact match";
 
         public override bool Matches(string name, string extension)
         {

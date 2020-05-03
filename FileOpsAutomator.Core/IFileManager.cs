@@ -14,6 +14,7 @@ namespace FileOpsAutomator.Core
         FileWatcherStatus Status { get; }
 
         Task ReadRulesAsync();
+        void InitWatchers();
         void Start();
         void Stop();        
     }

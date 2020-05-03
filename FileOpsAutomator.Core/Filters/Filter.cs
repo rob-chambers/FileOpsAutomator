@@ -12,6 +12,8 @@ namespace FileOpsAutomator.Core.Filters
 
         public string Name { get; private set; }
 
+        public virtual string Description { get; } = string.Empty;
+
         public string Extension { get; private set; }
 
         public abstract bool Matches(string name, string extension);

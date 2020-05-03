@@ -53,6 +53,7 @@
     <Compile Include="Filters\ExactMatchFilter.cs" />
     <Compile Include="Filters\Filter.cs" />
     <Compile Include="Filters\StartsWithFilter.cs" />
+    <Compile Include="Helpers\AttributeHelper.cs" />
     <Compile Include="IFileManager.cs" />
     <Compile Include="IFileWatcher.cs" />
     <Compile Include="IRuleRepository.cs" />
@@ -64,5 +65,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

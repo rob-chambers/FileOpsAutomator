@@ -38,6 +38,10 @@ namespace FileOpsAutomator.Core
         public async Task ReadRulesAsync()
         {
             Rules = (await _ruleRepository.GetAllAsync()).ToList();
+        }
+
+        public void InitWatchers()
+        {
             var list = new List<IFileWatcher>();
             foreach (var rule in Rules)
             {

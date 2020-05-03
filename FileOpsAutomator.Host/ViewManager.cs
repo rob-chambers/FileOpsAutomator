@@ -13,7 +13,7 @@ namespace FileOpsAutomator.Host
 {
     internal sealed class ViewManager : IViewManager
     {
-        private const int BalloonTimeoutInMilliseconds = 3000;
+        private const int BalloonTimeoutInMilliseconds = 1700;
 
         private readonly IFileManager _fileManager;
 
@@ -60,6 +60,7 @@ namespace FileOpsAutomator.Host
             _hiddenWindow.Hide();
 
             _fileManager.ReadRulesAsync().Wait();
+            _fileManager.InitWatchers();
 
             Start();
         }
@@ -137,7 +138,9 @@ namespace FileOpsAutomator.Host
 
         private void OnRulesClick(object sender, EventArgs e)
         {
-
+            var form = new MainForm();
+            form.FileManager = _fileManager;
+            form.ShowDialog();
         }
 
         private ToolStripMenuItem ToolStripMenuItemWithHandler(string displayText, string tooltipText, EventHandler eventHandler)
