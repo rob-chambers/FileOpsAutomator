@@ -9,7 +9,7 @@ namespace FileOpsAutomator.Host
         {
             Bind<STAApplicationContext>().To<STAApplicationContext>().InThreadScope();
             Bind<IViewManager>().To<ViewManager>().InThreadScope();
-            Bind<IRuleRepository>().To<InMemoryRuleRepository>().InThreadScope();
+            Bind<IRuleRepository>().To<JsonRuleRepository>().InThreadScope();
         }
     }
 }

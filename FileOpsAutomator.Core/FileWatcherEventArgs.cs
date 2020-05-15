@@ -4,11 +4,11 @@ namespace FileOpsAutomator.Core
 {
     public class FileWatcherEventArgs : EventArgs
     {
-        public FileWatcherEventArgs(string path)
+        public FileWatcherEventArgs(string fullPath)
         {
-            Path = path;
+            FullPath = fullPath;
         }
 
-        public string Path { get; }
+        public string FullPath { get; }
     }
 }

@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace FileOpsAutomator.Core.Filters
 {
+    [JsonConverter(typeof(FilterConverter))]
     public abstract class Filter
     {
         protected Filter(string name, string extension)
@@ -10,9 +12,12 @@ namespace FileOpsAutomator.Core.Filters
             Extension = extension ?? throw new ArgumentNullException(nameof(extension));
         }
 
+        public virtual FilterType Type => FilterType.Undefined;
+
         public string Name { get; private set; }
 
-        public virtual string Description { get; } = string.Empty;
+        [JsonIgnore]
+        public abstract string Description { get; }
 
         public string Extension { get; private set; }
 

@@ -11,6 +11,8 @@ namespace FileOpsAutomator.Core.Filters
 
         public override string Description => "starts with";
 
+        public override FilterType Type => FilterType.StartsWith;
+
         public override bool Matches(string name, string extension)
         {
             return name.StartsWith(Name, StringComparison.InvariantCultureIgnoreCase) &&

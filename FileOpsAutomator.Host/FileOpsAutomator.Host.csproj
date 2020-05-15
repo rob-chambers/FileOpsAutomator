@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Ninject, Version=4.0.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
       <HintPath>..\packages\Ninject.4.0.0-beta-0134\lib\net45\Ninject.dll</HintPath>
     </Reference>
@@ -58,7 +61,6 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="InMemoryRuleRepository.cs" />
     <Compile Include="IViewManager.cs" />
     <Compile Include="MainModule.cs" />
     <Compile Include="Program.cs" />
@@ -105,6 +107,10 @@
     <ProjectReference Include="..\FileOpsAutomator.Core\FileOpsAutomator.Core.csproj">
       <Project>{EC973A10-FFB3-4C26-9966-85054F98AEBB}</Project>
       <Name>FileOpsAutomator.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FileOpsAutomator.UI\FileOpsAutomator.UI.csproj">
+      <Project>{cacde357-12f7-444a-bc86-1d33e90c1305}</Project>
+      <Name>FileOpsAutomator.UI</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

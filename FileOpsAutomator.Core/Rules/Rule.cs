@@ -1,11 +1,15 @@
 ﻿using System;
 using FileOpsAutomator.Core.Filters;
+using Newtonsoft.Json;
 
 namespace FileOpsAutomator.Core.Rules
 {
+    [JsonConverter(typeof(RuleConverter))]
     public abstract class Rule
     {
         public event EventHandler<string> Processed;
+
+        public virtual RuleType Type => RuleType.Undefined;
 
         public string SourceFolder { get; set; }
 
@@ -13,7 +17,7 @@ namespace FileOpsAutomator.Core.Rules
 
         public bool IsEnabled { get; set; } = true;
 
-        public abstract void Process(string fileName, string extension);
+        public abstract void Process(string fullPath, string extension);
 
         protected void OnProcessed(string message)
         {

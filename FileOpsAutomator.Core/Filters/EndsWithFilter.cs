@@ -11,6 +11,8 @@ namespace FileOpsAutomator.Core.Filters
 
         public override string Description => "ends with";
 
+        public override FilterType Type => FilterType.EndsWith;
+
         public override bool Matches(string name, string extension)
         {
             return name.EndsWith(Name, StringComparison.InvariantCultureIgnoreCase) &&

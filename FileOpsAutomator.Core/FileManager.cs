@@ -68,8 +68,8 @@ namespace FileOpsAutomator.Core
         {
             foreach (var rule in Rules)
             {
-                var extension = Path.GetExtension(e.Path);
-                rule.Process(e.Path, extension);
+                var extension = Path.GetExtension(e.FullPath);
+                rule.Process(e.FullPath, extension);
             }
         }
 
@@ -85,12 +85,20 @@ namespace FileOpsAutomator.Core
 
         public void Stop()
         {
+            if (_fileWatchers == null)
+                return;
+
             foreach (var watcher in _fileWatchers)
             {
                 watcher.Stop();
             }
 
             Status = FileWatcherStatus.Stopped;
+        }
+
+        public void SaveRules()
+        {
+            _ruleRepository.WriteRules(Rules);
         }
     }
 }

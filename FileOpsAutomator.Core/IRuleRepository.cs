@@ -7,5 +7,6 @@ namespace FileOpsAutomator.Core
     public interface IRuleRepository
     {
         Task<IEnumerable<Rule>> GetAllAsync();
+        void WriteRules(IEnumerable<Rule> rules);
     }
 }

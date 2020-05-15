@@ -9,12 +9,14 @@ namespace FileOpsAutomator.Core.Rules
     {
         public string DestinationFolder { get; set; }
 
-        public override void Process(string path, string extension)
+        public override RuleType Type => RuleType.MoveRule;
+
+        public override void Process(string fullPath, string extension)
         {
             if (!IsEnabled) return;
 
-            var folder = Path.GetDirectoryName(path);
-            var fileWithoutExtension = Path.GetFileNameWithoutExtension(path);
+            var folder = Path.GetDirectoryName(fullPath);
+            var fileWithoutExtension = Path.GetFileNameWithoutExtension(fullPath);
 
             if (!Filter.Matches(Path.Combine(folder, fileWithoutExtension), extension))
             {
@@ -23,17 +25,17 @@ namespace FileOpsAutomator.Core.Rules
             
             if (folder != SourceFolder) return;
 
-            if (!File.Exists(path)) return;
+            if (!File.Exists(fullPath)) return;
 
-            var destination = Path.Combine(DestinationFolder, Path.GetFileName(path));
-            File.Move(path, destination);
+            var destination = Path.Combine(DestinationFolder, Path.GetFileName(fullPath));
+            File.Move(fullPath, destination);
 
-            RaiseProcessedEvent(path);
+            RaiseProcessedEvent(fullPath);
         }
 
-        private void RaiseProcessedEvent(string path)
+        private void RaiseProcessedEvent(string fullPath)
         {
-            var fileNameOnly = Path.GetFileName(path);
+            var fileNameOnly = Path.GetFileName(fullPath);
             var sourceFolderOnly = GetDirectoryNameWithoutFullPath(SourceFolder);
             var destFolderOnly = GetDirectoryNameWithoutFullPath(DestinationFolder);
 

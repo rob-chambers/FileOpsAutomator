@@ -16,6 +16,7 @@ namespace FileOpsAutomator.Core
         Task ReadRulesAsync();
         void InitWatchers();
         void Start();
-        void Stop();        
+        void Stop();
+        void SaveRules();
     }
 }
