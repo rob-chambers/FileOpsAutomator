@@ -10,12 +10,18 @@ namespace FileOpsAutomator.Core
         public FileWatcher(string path)
         {
             _watcher = new FileSystemWatcher(path);
-            _watcher.Created += OnFileWatcherCreated;            
+            _watcher.Created += OnFileWatcherCreated;
+            _watcher.Changed += OnFileWatcherChanged;
         }
       
         public event EventHandler<FileWatcherEventArgs> Changed;
 
         private void OnFileWatcherCreated(object sender, FileSystemEventArgs e)
+        {
+            Changed?.Invoke(this, new FileWatcherEventArgs(e.FullPath));
+        }
+
+        private void OnFileWatcherChanged(object sender, FileSystemEventArgs e)
         {
             Changed?.Invoke(this, new FileWatcherEventArgs(e.FullPath));
         }

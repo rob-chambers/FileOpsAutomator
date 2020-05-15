@@ -28,6 +28,8 @@ namespace FileOpsAutomator.Core.Rules
             if (!File.Exists(fullPath)) return;
 
             var destination = Path.Combine(DestinationFolder, Path.GetFileName(fullPath));
+            if (File.Exists(destination)) return;
+
             File.Move(fullPath, destination);
 
             RaiseProcessedEvent(fullPath);
