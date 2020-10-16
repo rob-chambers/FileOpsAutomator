@@ -42,10 +42,10 @@ namespace FileOpsAutomator.Host
             item.SubItems.Add(rule.Filter.Extension);
             
             // TODO: Make this SOLID
-            var moveRule = rule as MoveRule;
-            if (moveRule != null)
+            if (rule is MoveRule moveRule)
             {
-                item.SubItems.Add(moveRule.DestinationFolder);                               
+                item.SubItems.Add(moveRule.DestinationFolder);
+                item.SubItems.Add(rule.Open.ToString());
             }
 
             return item;
@@ -69,6 +69,7 @@ namespace FileOpsAutomator.Host
             RulesListView.Columns.Add("Filter Type", 150);
             RulesListView.Columns.Add("Extension", 120);
             RulesListView.Columns.Add("Destination Folder", 280);
+            RulesListView.Columns.Add("Open?", 50);
         }
     }
 }

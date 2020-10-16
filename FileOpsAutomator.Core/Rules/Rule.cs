@@ -17,6 +17,8 @@ namespace FileOpsAutomator.Core.Rules
 
         public bool IsEnabled { get; set; } = true;
 
+        public bool Open { get; set; }
+
         public abstract void Process(string fullPath, string extension);
 
         protected void OnProcessed(string message)

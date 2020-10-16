@@ -33,6 +33,16 @@ namespace FileOpsAutomator.Core.Rules
             File.Move(fullPath, destination);
 
             RaiseProcessedEvent(fullPath);
+
+            if (Open)
+            {
+                OpenFile(destination);
+            }
+        }
+
+        private void OpenFile(string fileName)
+        {
+            System.Diagnostics.Process.Start(fileName);
         }
 
         private void RaiseProcessedEvent(string fullPath)
